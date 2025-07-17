@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>OpenVPN 管理界面</title>
+  <meta http-equiv="refresh" content="30">
+</head>
+<body>
+
+  <h2>添加新用户</h2>
+  <form method="POST" action="/add">
+    用户名：<input type="text" name="name" required>
+    P12密码（可选）：<input type="text" name="p12password">
+    <button type="submit">添加用户</button>
+  </form>
+
+  <hr>
+  <h2>已签发用户</h2>
+  <ul>
+    <% certs.forEach(name => { %>
+      <li>
+        <%= name %> |
+        <form style="display:inline" method="POST" action="/revoke">
+          <input type="hidden" name="name" value="<%= name %>">
+          <button type="submit" onclick="return confirm('确认吊销用户 <%= name %> 吗？')">吊销</button>
+        </form>
+        <a href="/download/<%= name %>/p12">下载 .p12</a>
+        <a href="/download/<%= name %>/ovpn">下载 .ovpn</a>
+      </li>
+    <% }) %>
+  </ul>
+
+  <hr>
+  <h2>在线用户 <button onclick="location.reload()">⟳ 刷新</button></h2>
+  <% if (onlineUsers.length === 0) { %>
+    <p>暂无在线用户</p>
+  <% } else { %>
+    <table border="1" cellpadding="5" cellspacing="0">
+      <thead>
+        <tr>
+          <th>用户名</th>
+          <th>真实IP</th>
+          <th>虚拟IP</th>
+          <th>接收流量 (MB)</th>
+          <th>发送流量 (MB)</th>
+          <th>连接时间</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% onlineUsers.forEach(user => { %>
+          <tr>
+            <td><%= user.name %></td>
+            <td><%= user.realIP %></td>
+            <td><%= user.virtualIP %></td>
+            <td><%= (user.bytesReceived / 1024 / 1024).toFixed(2) %></td>
+            <td><%= (user.bytesSent / 1024 / 1024).toFixed(2) %></td>
+            <td><%= user.connectedAt %></td>
+            <td>
+              <form method="POST" action="/kick/<%= user.name %>" style="display:inline;">
+                <button type="submit" onclick="return confirm('确定踢下线 <%= user.name %> 吗？')">踢下线</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+
+</body>
+</html>
+
