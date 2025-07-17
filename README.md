@@ -1,6 +1,7 @@
 # 🌐 OpenVPN Web UI 管理界面
 
 这是一个基于 Node.js 和 Shell 的 OpenVPN 用户管理系统，提供图形化界面用于：
+<img width="1414" height="907" alt="image" src="https://github.com/user-attachments/assets/2fc70356-14f6-45d6-a768-46d6b9bab80b" />
 
 * 添加 & 吊销用户
 * 一键生成 .ovpn 和 .p12 文件
