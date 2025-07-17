@@ -82,4 +82,5 @@ sudo systemctl start openvpn-webui
 
 * 用户名仅允许：英文、数字、下划线、短横线
 * 禁止中文或特殊符号（已在前端 + Node + Shell 三层校验）
+* 此项目中ubuntu-22.04-lts-vpn-server.sh脚本来自 https://github.com/angristan/openvpn-install 项目；但是在此基础上做了优化便于管理平台调用和功能增加
 
