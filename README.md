@@ -6,6 +6,17 @@
 * 一键生成 .ovpn 和 .p12 文件
 * 实时查看连接用户和流量
 * 踩人下线功能
+## 📆 安装前提
+  * 已安装openvpn,或使用本项目中脚本安装
+  * 已安装nodejs 18 以上环境,或使用以下命令安装
+```
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt install -y nodejs
+```
+  * 本项目默认安装路径为opt目录下，git 下本项目后请将openvpn 目录移动到opt目录下
+```
+mv openvpn /opt
+```
 
 ## 📆 安装依赖
 
@@ -35,14 +46,16 @@ node app.js
 ```bash
 sudo nano /etc/systemd/system/openvpn-webui.service
     [Unit]
-    Description=OpenVPN Web UI Service
+    Description=OpenVPN WebUI 后台服务
     After=network.target
     
     [Service]
     Type=simple
-    WorkingDirectory=/root/openvpn-webui
-    ExecStart=/usr/bin/node app.js
-    Restart=on-failure
+    ExecStart=/usr/bin/node /opt/openvpn/app.js
+    WorkingDirectory=/opt/openvpn
+    Restart=always
+    RestartSec=5
+    User=root
     Environment=NODE_ENV=production
     
     [Install]
